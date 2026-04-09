@@ -91,6 +91,9 @@ export default function EditStock() {
           <Button color="inherit" component={Link} href="/stock">
             Stock Levels
           </Button>
+          <Button color="inherit" component={Link} href="/transfers">
+            Transfers
+          </Button>
         </Toolbar>
       </AppBar>
 

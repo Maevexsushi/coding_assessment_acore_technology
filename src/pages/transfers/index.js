@@ -218,6 +218,7 @@ export default function Transfers() {
                 { href: '/products', label: 'Products', icon: <CategoryIcon fontSize="small" /> },
                 { href: '/warehouses', label: 'Warehouses', icon: <WarehouseIcon fontSize="small" /> },
                 { href: '/stock', label: 'Stock', icon: <InventoryIcon fontSize="small" /> },
+                { href: '/transfers', label: 'Transfers', icon: <CompareArrowsIcon fontSize="small" /> },
               ].map(({ href, label, icon }) => (
                 <Button
                   key={href}
