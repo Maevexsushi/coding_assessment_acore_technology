@@ -33,6 +33,7 @@ import NatureIcon from '@mui/icons-material/Nature';
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import CompareArrowsIcon from '@mui/icons-material/CompareArrows';
 import DashboardIcon from '@mui/icons-material/Dashboard';
+import NotificationsIcon from '@mui/icons-material/Notifications';
 import {
   BarChart,
   Bar,
@@ -229,6 +230,7 @@ export default function Home() {
                 { href: '/warehouses', label: 'Warehouses', icon: <WarehouseIcon fontSize="small" /> },
                 { href: '/stock', label: 'Stock Levels', icon: <InventoryIcon fontSize="small" /> },
                 { href: '/transfers', label: 'Transfers', icon: <CompareArrowsIcon fontSize="small" /> },
+                { href: '/alerts',    label: 'Alerts',    icon: <NotificationsIcon fontSize="small" /> },
               ].map(({ href, label, icon }) => (
                 <Button
                   key={href}
@@ -307,20 +309,22 @@ export default function Home() {
               />
             </Grid>
             <Grid item xs={12} sm={6} lg={3}>
-              <MetricCard
-                icon={<WarningAmberIcon />}
-                title="Low Stock Alerts"
-                value={loading ? null : lowStockCount}
-                subtitle={
-                  loading
-                    ? null
-                    : lowStockCount > 0
-                    ? `${lowStockCount} product(s) need reordering`
-                    : 'All products well-stocked'
-                }
-                accentColor={lowStockCount > 0 ? '#E65100' : '#2E7D32'}
-                loading={loading}
-              />
+              <Box component={Link} href="/alerts" sx={{ textDecoration: 'none', display: 'block', height: '100%' }}>
+                <MetricCard
+                  icon={<WarningAmberIcon />}
+                  title="Low Stock Alerts"
+                  value={loading ? null : lowStockCount}
+                  subtitle={
+                    loading
+                      ? null
+                      : lowStockCount > 0
+                      ? `${lowStockCount} product(s) — click to manage`
+                      : 'All products well-stocked'
+                  }
+                  accentColor={lowStockCount > 0 ? '#E65100' : '#2E7D32'}
+                  loading={loading}
+                />
+              </Box>
             </Grid>
           </Grid>
 

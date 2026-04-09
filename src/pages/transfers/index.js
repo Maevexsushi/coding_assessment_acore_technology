@@ -37,6 +37,7 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import CompareArrowsIcon from '@mui/icons-material/CompareArrows';
 import DashboardIcon from '@mui/icons-material/Dashboard';
+import NotificationsIcon from '@mui/icons-material/Notifications';
 
 // ─── Theme (matches dashboard) ────────────────────────────────────────────────
 const theme = createTheme({
@@ -219,6 +220,7 @@ export default function Transfers() {
                 { href: '/warehouses', label: 'Warehouses', icon: <WarehouseIcon fontSize="small" /> },
                 { href: '/stock', label: 'Stock', icon: <InventoryIcon fontSize="small" /> },
                 { href: '/transfers', label: 'Transfers', icon: <CompareArrowsIcon fontSize="small" /> },
+                { href: '/alerts',    label: 'Alerts',    icon: <NotificationsIcon fontSize="small" /> },
               ].map(({ href, label, icon }) => (
                 <Button
                   key={href}

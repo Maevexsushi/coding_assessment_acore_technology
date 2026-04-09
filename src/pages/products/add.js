@@ -67,6 +67,9 @@ export default function AddProduct() {
           <Button color="inherit" component={Link} href="/transfers">
             Transfers
           </Button>
+          <Button color="inherit" component={Link} href="/alerts">
+            Alerts
+          </Button>
         </Toolbar>
       </AppBar>
 
