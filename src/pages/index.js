@@ -32,6 +32,7 @@ import ErrorIcon from '@mui/icons-material/Error';
 import NatureIcon from '@mui/icons-material/Nature';
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import CompareArrowsIcon from '@mui/icons-material/CompareArrows';
+import DashboardIcon from '@mui/icons-material/Dashboard';
 import {
   BarChart,
   Bar,
@@ -223,6 +224,7 @@ export default function Home() {
             </Typography>
             <Box sx={{ display: 'flex', gap: 0.5 }}>
               {[
+                { href: '/', label: 'Dashboard', icon: <DashboardIcon fontSize="small" /> },
                 { href: '/products', label: 'Products', icon: <CategoryIcon fontSize="small" /> },
                 { href: '/warehouses', label: 'Warehouses', icon: <WarehouseIcon fontSize="small" /> },
                 { href: '/stock', label: 'Stock Levels', icon: <InventoryIcon fontSize="small" /> },
