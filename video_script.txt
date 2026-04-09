@@ -1,13 +1,14 @@
-VIDEO WALKTHROUGH SCRIPT — Tasks 1, 2 & 3
-==========================================
+VIDEO WALKTHROUGH SCRIPT — Tasks 1, 2, 3 & 4
+=============================================
 [Before recording: run `npm run dev`, open browser + code editor side by side]
 
 
 --- INTRO (15 seconds) ---
 
-"Hi, I'm [Name]. I'll walk you through Tasks 1, 2, and 3 of the GreenSupply
+"Hi, I'm [Name]. I'll walk you through all four tasks of the GreenSupply
 inventory management assessment — the dashboard redesign, the stock transfer
-system, and the low stock alert and reorder system."
+system, the low stock alert and reorder system, and the bug investigation
+with a scaling write-up."
 
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
