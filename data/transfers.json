@@ -1,1 +1,82 @@
-[]
+[
+  {
+    "id": 1,
+    "productId": 1,
+    "fromWarehouseId": 1,
+    "toWarehouseId": 2,
+    "quantity": 50,
+    "notes": "TEST",
+    "status": "completed",
+    "createdAt": "2026-04-09T03:18:14.573Z"
+  },
+  {
+    "id": 2,
+    "productId": 1,
+    "fromWarehouseId": 2,
+    "toWarehouseId": 3,
+    "quantity": 60,
+    "notes": "Redistribute to Southern Hub",
+    "status": "completed",
+    "createdAt": "2026-03-15T08:00:00.000Z"
+  },
+  {
+    "id": 3,
+    "productId": 1,
+    "fromWarehouseId": 1,
+    "toWarehouseId": 3,
+    "quantity": 40,
+    "notes": "Urgent stock request",
+    "status": "completed",
+    "createdAt": "2026-03-25T14:30:00.000Z"
+  },
+  {
+    "id": 4,
+    "productId": 2,
+    "fromWarehouseId": 1,
+    "toWarehouseId": 3,
+    "quantity": 150,
+    "notes": "Southern Hub restock",
+    "status": "completed",
+    "createdAt": "2026-03-20T09:00:00.000Z"
+  },
+  {
+    "id": 5,
+    "productId": 2,
+    "fromWarehouseId": 3,
+    "toWarehouseId": 2,
+    "quantity": 100,
+    "notes": "West Coast fulfillment",
+    "status": "completed",
+    "createdAt": "2026-03-30T11:00:00.000Z"
+  },
+  {
+    "id": 6,
+    "productId": 5,
+    "fromWarehouseId": 2,
+    "toWarehouseId": 3,
+    "quantity": 200,
+    "notes": "Dallas bulk order prep",
+    "status": "completed",
+    "createdAt": "2026-03-12T07:00:00.000Z"
+  },
+  {
+    "id": 7,
+    "productId": 5,
+    "fromWarehouseId": 3,
+    "toWarehouseId": 2,
+    "quantity": 180,
+    "notes": "Return to West Coast",
+    "status": "completed",
+    "createdAt": "2026-03-22T10:00:00.000Z"
+  },
+  {
+    "id": 8,
+    "productId": 5,
+    "fromWarehouseId": 2,
+    "toWarehouseId": 1,
+    "quantity": 150,
+    "notes": "Newark emergency restock",
+    "status": "completed",
+    "createdAt": "2026-04-01T16:00:00.000Z"
+  }
+]
