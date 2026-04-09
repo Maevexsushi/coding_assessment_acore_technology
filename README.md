@@ -205,7 +205,7 @@ Record a video demonstration covering:
 - Known limitations or trade-offs
 - What you'd improve with more time
 
-**Format:** Upload to YouTube (unlisted), Loom, or similar platform. Include link in your README.
+**Format:** Upload to YouTube (unlisted), Loom, Google Drive, or similar platform. Include link in your README.
 
 ### 3. Update This README
 
@@ -398,7 +398,9 @@ npm run dev
 
 ### 🎥 Video Walkthrough
 
-[INSERT VIDEO LINK HERE]
+**Recording:** [coding assessment walkthrough (Google Drive)](https://drive.google.com/file/d/1KZL7Qy50veeM1YXsQ9JusACB4ubJAfSa/view?usp=sharing)
+
+The video walks through the redesigned dashboard (including responsiveness), stock transfer flows, the low-stock alert and reorder system, the dashboard inventory-value bug investigation and fix, and the main technical decisions (atomic transfers, reorder formula, architecture notes).
 
 ---
 
