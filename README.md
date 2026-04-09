@@ -312,8 +312,8 @@ The most impactful change is replacing JSON files with a relational database —
 
 ## 📝 Implementation Summary
 
-**Submitted by:** [Your Name]
-**Completion time:** ~18 hours across 3 days
+**Submitted by:** Princess Mae D. Elfa
+**Completion time:** ~9 hours across 3 days
 
 ---
 
