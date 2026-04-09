@@ -5,10 +5,10 @@ VIDEO WALKTHROUGH SCRIPT — Tasks 1, 2, 3 & 4
 
 --- INTRO (15 seconds) ---
 
-"Hi, I'm [Name]. I'll walk you through all four tasks of the GreenSupply
+"Hi, I'm Princess Mae. I'll walk you through all four tasks of the GreenSupply
 inventory management assessment — the dashboard redesign, the stock transfer
-system, the low stock alert and reorder system, and the bug investigation
-with a scaling write-up."
+system, the low stock alert and reorder system, the bug investigation with a
+scaling write-up, and two optional enhancements: dark mode and CSV/PDF export."
 
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -41,21 +41,22 @@ and row tinting for items that need attention."
 
 CODE:
 
+  >> Open src/lib/theme.js
+  "The theme lives in a shared factory — createAppTheme(mode). Primary green
+  #2E7D32, light green background in light mode, dark green background in dark
+  mode, rounded corners on everything. One place to change, every page updates."
+
   >> Open src/pages/index.js
 
-  >> Show lines 51–66 (theme)
-  "I defined a custom MUI theme here — primary green #2E7D32, light green
-  background, rounded corners on everything."
-
-  >> Show lines 72–78 (getStockStatus)
+  >> Show lines 37–43 (getStockStatus)
   "Stock status is a pure helper — five tiers based on the ratio of
   quantity to reorder point. This keeps the logic out of the JSX."
 
-  >> Show lines 142–157 (useEffect / Promise.all)
+  >> Show lines 116–124 (useEffect / Promise.all)
   "All three API calls run in parallel with Promise.all. If any fail,
   an error alert renders instead of a broken page."
 
-  >> Show lines 81–112 (MetricCard with Skeleton)
+  >> Show lines 60–97 (MetricCard with Skeleton)
   "While data loads, every section shows MUI Skeleton placeholders —
   so there's never a flash of empty content."
 
@@ -235,6 +236,59 @@ SCALING WRITE-UP:
   warehouseId turn full-file scans into O(log n) lookups. Add Redis for
   caching the product catalog, PgBouncer for connection pooling under
   concurrent load, and Docker for horizontal scaling as the operation grows."
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+OPTIONAL ENHANCEMENTS  (~1.5 minutes)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+>> Point to the sun/moon icon button in the AppBar
+
+DARK MODE:
+
+"I added a dark mode toggle to every page. Clicking the icon switches
+between light and dark themes — the preference is saved to localStorage
+so it persists across page refreshes."
+
+  >> Toggle dark mode on the dashboard
+  "The background, cards, table headers, and chart axes all update.
+  The eco-green navbar stays the same since it's already dark."
+
+  >> Navigate to Products, Warehouses, Transfers — show toggle works everywhere
+  "It works across all pages, including the older products and warehouses
+  pages."
+
+CODE:
+
+  >> Open src/lib/colorModeContext.js
+  "The mode is stored in a React context defined here. It reads from
+  localStorage on mount and writes back on every toggle — so the
+  preference survives a page refresh."
+
+  >> Open src/pages/_app.js
+  "The ThemeProvider and CssBaseline live here at the app level. CssBaseline
+  is the key piece — it sets body text color to follow the theme, which is
+  why text on all pages, including the old ones, goes white in dark mode
+  automatically."
+
+EXPORT (CSV / PDF):
+
+  >> Go to Dashboard, point to CSV and PDF buttons next to "Inventory Overview"
+
+"I added export buttons to the Dashboard, Transfers, Alerts, and Products
+pages. CSV exports instantly with pure JavaScript — no library needed.
+PDF uses jsPDF with a green header row."
+
+  >> Click CSV — show the file downloads
+  >> Click PDF — show the PDF opens with the green-header table
+
+CODE:
+
+  >> Open src/pages/index.js, show lines 45–57 (exportCSV / exportPDF)
+  "exportCSV is pure JS — builds a comma-separated string, creates a Blob,
+  and triggers a download link. exportPDF uses a dynamic import so the
+  ~300 kB jsPDF bundle only loads when the user actually clicks the button,
+  not on every page load."
 
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
