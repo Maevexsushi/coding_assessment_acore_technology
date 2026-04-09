@@ -78,5 +78,15 @@
     "notes": "Newark emergency restock",
     "status": "completed",
     "createdAt": "2026-04-01T16:00:00.000Z"
+  },
+  {
+    "id": 9,
+    "productId": 1,
+    "fromWarehouseId": 1,
+    "toWarehouseId": 2,
+    "quantity": 10,
+    "notes": "",
+    "status": "completed",
+    "createdAt": "2026-04-09T04:49:17.441Z"
   }
 ]

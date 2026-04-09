@@ -2,9 +2,9 @@
   {
     "id": 1,
     "productId": 1,
-    "status": "open",
+    "status": "resolved",
     "createdAt": "2026-04-09T03:44:43.439Z",
-    "updatedAt": "2026-04-09T03:44:43.439Z"
+    "updatedAt": "2026-04-09T05:00:49.002Z"
   },
   {
     "id": 2,
