@@ -31,6 +31,7 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import ErrorIcon from '@mui/icons-material/Error';
 import NatureIcon from '@mui/icons-material/Nature';
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
+import CompareArrowsIcon from '@mui/icons-material/CompareArrows';
 import {
   BarChart,
   Bar,
@@ -225,6 +226,7 @@ export default function Home() {
                 { href: '/products', label: 'Products', icon: <CategoryIcon fontSize="small" /> },
                 { href: '/warehouses', label: 'Warehouses', icon: <WarehouseIcon fontSize="small" /> },
                 { href: '/stock', label: 'Stock Levels', icon: <InventoryIcon fontSize="small" /> },
+                { href: '/transfers', label: 'Transfers', icon: <CompareArrowsIcon fontSize="small" /> },
               ].map(({ href, label, icon }) => (
                 <Button
                   key={href}
