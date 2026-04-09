@@ -295,3 +295,15 @@ Good luck! 💪
 ---
 
 **Setup issues?** Verify Node.js is installed and you're using a modern browser. If problems persist, document them in your submission.
+
+---
+
+## 📈 Task 4B — Scaling Write-up
+
+### What breaks first
+
+The JSON file storage is the first bottleneck at scale. Each API request reads the **entire file** into memory, mutates it, and writes it back — a pattern that works fine for a handful of records but becomes expensive with 10,000 products and 500 warehouses (stock.json alone could grow to millions of entries). More critically, there is no concurrency control: if two users submit a stock transfer at the same millisecond, both requests read the same `stock.json` before either writes back, and the second write silently overwrites the first. The single-write atomicity trick used in Task 2 prevents partial transfers within one request, but it cannot protect against two simultaneous requests racing each other. Under 50 concurrent users this race condition would be a near-certainty during busy periods.
+
+### How to evolve the architecture
+
+The most impactful change is replacing JSON files with a relational database — **PostgreSQL** is the natural fit here. Stock transfers become proper `BEGIN / UPDATE / UPDATE / COMMIT` transactions with row-level locking, eliminating the race condition entirely. Indexes on `productId` and `warehouseId` foreign keys turn O(n) file scans into O(log n) indexed lookups. For the 50-concurrent-user load, a connection pool (PgBouncer or built-in pooling via Prisma) prevents connection exhaustion. Frequently-read, rarely-changed data — the product catalog, warehouse list — can be cached in **Redis** with a short TTL so the database is not hit on every dashboard load. As the operation grows further, the Next.js API routes can be extracted into a dedicated **Node.js / Express** service behind a load balancer, and the whole stack containerised with Docker for horizontal scaling. The transfer and alert logic already written maps cleanly onto this architecture with minimal changes to the business rules.

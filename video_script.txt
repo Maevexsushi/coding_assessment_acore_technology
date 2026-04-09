@@ -1,0 +1,278 @@
+VIDEO WALKTHROUGH SCRIPT — Tasks 1, 2 & 3
+==========================================
+[Before recording: run `npm run dev`, open browser + code editor side by side]
+
+
+--- INTRO (15 seconds) ---
+
+"Hi, I'm [Name]. I'll walk you through Tasks 1, 2, and 3 of the GreenSupply
+inventory management assessment — the dashboard redesign, the stock transfer
+system, and the low stock alert and reorder system."
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+TASK 1 — DASHBOARD  (~2.5 minutes)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+>> Open localhost:3000
+
+FEATURE DEMO:
+
+"The dashboard was rebuilt from scratch with a custom eco-green MUI theme
+to match GreenSupply's sustainable brand.
+
+At the top are four KPI cards — total products, active warehouses,
+total inventory value, and a low stock alert count that turns orange
+when any product is below its reorder point. That last card is also
+clickable — it links directly to the alerts page.
+
+Below that are two charts: a bar chart comparing current stock vs. reorder
+threshold per product, and a donut chart showing inventory value by category.
+
+Then warehouse overview cards — each shows SKU count, total units, and value.
+
+The inventory table at the bottom has five status levels: Out of Stock,
+Critical, Low Stock, Adequate, and Well Stocked, with color-coded chips
+and row tinting for items that need attention."
+
+  >> Resize the browser to show responsiveness
+  "The layout is fully responsive — cards and charts stack on smaller screens."
+
+CODE:
+
+  >> Open src/pages/index.js
+
+  >> Show lines 51–66 (theme)
+  "I defined a custom MUI theme here — primary green #2E7D32, light green
+  background, rounded corners on everything."
+
+  >> Show lines 72–78 (getStockStatus)
+  "Stock status is a pure helper — five tiers based on the ratio of
+  quantity to reorder point. This keeps the logic out of the JSX."
+
+  >> Show lines 142–157 (useEffect / Promise.all)
+  "All three API calls run in parallel with Promise.all. If any fail,
+  an error alert renders instead of a broken page."
+
+  >> Show lines 81–112 (MetricCard with Skeleton)
+  "While data loads, every section shows MUI Skeleton placeholders —
+  so there's never a flash of empty content."
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+TASK 2 — STOCK TRANSFERS  (~3 minutes)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+>> Click Transfers in the navbar
+
+FEATURE DEMO — successful transfer:
+
+"The left panel is the transfer form. When I select a product, the right
+panel immediately shows its current stock across all warehouses."
+
+  >> Select Bamboo Spork Set → NDC-01 → WCF-02 → qty 10 → Notes: "restock"
+  "A chip shows available units at the source. I'll transfer 10 units
+  and submit."
+
+  >> Click Initiate Transfer
+  "Success — the form resets, the stock distribution panel refreshes, and
+  the transfer appears in the history table below with a Completed chip."
+
+FEATURE DEMO — error scenarios:
+
+  >> Submit with empty form
+  "Empty form: 'Please fill in all required fields.'"
+
+  >> Select a product, pick a source, enter qty 9999
+  "Exceeding available stock: the quantity field goes red immediately,
+  and submitting shows the exact available amount in the error message.
+  The same check also runs server-side, so you can't bypass it."
+
+CODE:
+
+  >> Open src/pages/api/transfers/index.js
+
+  >> Show lines 48–73 (atomicity block)
+  "This is the key decision for data integrity. Both changes — deducting
+  from the source and crediting the destination — are applied to the
+  in-memory stock array first. Then the entire array is written in a
+  single fs.writeFileSync call. Either both changes land on disk or
+  neither does. There's no window where one warehouse is updated and
+  the other isn't."
+
+  >> Show lines 60–66 (destination handling)
+  "If the product doesn't exist at the destination yet, a new stock entry
+  is created automatically. This handles first-time transfers to a warehouse."
+
+  >> Open src/pages/transfers/index.js, show lines 95–101 (availableQty)
+  "The available stock chip is a reactive computed value — it recalculates
+  every time the product or source warehouse changes, keeping the UI
+  always in sync."
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+TASK 3 — LOW STOCK ALERTS  (~2.5 minutes)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+>> Click Alerts in the navbar
+
+FEATURE DEMO:
+
+"The alerts page shows all products that are below their reorder point.
+Right now we have three: Bamboo Spork Set and Coffee Cup are Critical,
+and Compostable Food Container is Low Stock.
+
+At the top is the formula card explaining exactly how the recommended
+order quantity is calculated."
+
+  >> Point to the formula card
+  "The formula is: reorderQty = max(0, reorderPoint×2 minus currentStock
+  plus ceil(velocity×leadTime)). I'll explain each part in the code section."
+
+  >> Point to the Lead Time input
+  "Lead time is configurable. Default is 7 days. I'll change it to 14."
+
+  >> Change lead time to 14, click Apply
+  "The recommended order quantities update immediately — higher lead time
+  means more safety stock needs to be ordered."
+
+  >> Change back to 7, click Apply
+
+  >> Point to the table
+  "Each row shows current stock, reorder point, stock status chip,
+  transfer velocity in units per day, and the recommended order quantity."
+
+  >> Click Acknowledge on the first alert
+  "Clicking Acknowledge moves the alert to Acknowledged status — the manager
+  has seen it and is acting on it."
+
+  >> Click Resolve
+  "Resolve marks it done. Re-open brings it back if needed."
+
+  >> Click the filter tabs (Open, Acknowledged, Resolved)
+  "The tabs filter by status so managers can focus on what needs action."
+
+  >> Go back to dashboard, click the Low Stock KPI card
+  "The Low Stock Alerts card on the dashboard links directly here."
+
+CODE:
+
+  >> Open src/pages/api/alerts/index.js
+
+  >> Show lines 21–30 (computeVelocity)
+  "Velocity is the total units transferred for a product in the last 30 days
+  divided by 30 — giving average units per day. This comes directly from
+  the transfers built in Task 2."
+
+  >> Show lines 47–51 (computeReorderQty)
+  "The formula: target is 2× reorder point as a comfortable buffer.
+  Safety stock is velocity × lead time — the units that will move while
+  waiting for the order. We add both and subtract current stock, clamped
+  to zero so we never recommend a negative order."
+
+  >> Show lines 83–97 (auto-create alert)
+  "When a product drops below its reorder point, an alert record is
+  auto-created in alerts.json on the first GET request. No manual setup
+  needed — the system detects and records it automatically."
+
+  >> Open src/pages/api/alerts/[id].js
+  >> Show lines 16–18 (status validation)
+  "Status updates are validated against the three allowed values —
+  open, acknowledged, resolved — before writing to disk."
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+TASK 4 — BUG HUNT & SCALING  (~2 minutes)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+>> Open src/pages/api/products/[id].js
+
+BUG INVESTIGATION:
+
+"The bug report said inventory values on the dashboard become incorrect
+after certain product management operations — the values are fine
+initially but drift downward after normal use.
+
+My first hypothesis was that the dashboard calculation was wrong, so I
+checked index.js — the value formula looked correct. Then I asked: when
+does the value change? After editing a product. So I went straight to
+the PUT handler in products/[id].js."
+
+  >> Show the original PUT block (lines 18–34)
+  "Right here — this line was the culprit:
+    unitCost: parseInt(req.body.unitCost)
+
+  parseInt truncates to the integer part. So a product with a unit cost
+  of 2.50 becomes 2 on the first edit, and 0.85 becomes 0. The corruption
+  is silent — no error, no warning. Every time a manager edits any field
+  on a product, the unit cost gets silently floored to its integer part.
+
+  The fix is a one-word change: parseFloat instead of parseInt for
+  unitCost. I left parseInt for reorderPoint, which is always a whole number."
+
+  >> Show the fixed line
+  "unitCost: parseFloat(req.body.unitCost)
+
+  I also added a comment explaining what was wrong and why, so the next
+  developer doesn't accidentally revert it."
+
+SCALING WRITE-UP:
+
+  >> Open README.md, scroll to '## Task 4B — Scaling Write-up'
+
+  "I also wrote up how I'd evolve this architecture for 500 warehouses,
+  10,000 products, and 50 concurrent users.
+
+  The first thing that breaks is the JSON file storage. Every request
+  reads the entire file, mutates it, and writes it back — with no
+  concurrency control. Two simultaneous transfers would race each other
+  and one would silently overwrite the other's changes.
+
+  The fix: replace JSON files with PostgreSQL. Stock transfers become
+  proper BEGIN/UPDATE/UPDATE/COMMIT transactions with row-level locking —
+  eliminating the race condition entirely. Indexes on productId and
+  warehouseId turn full-file scans into O(log n) lookups. Add Redis for
+  caching the product catalog, PgBouncer for connection pooling under
+  concurrent load, and Docker for horizontal scaling as the operation grows."
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+REFLECTION  (~1.5 minutes)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+WHAT I'M PROUD OF:
+
+"The piece I'm most satisfied with is the atomicity solution in the
+transfer API. Using a single writeFileSync after applying both stock
+changes in memory is the correct answer for this storage layer — it
+doesn't require a database or a queue, it just uses the guarantee that
+the OS won't give you a partial write on a single call. It's simple,
+it's correct, and it's easy to reason about.
+
+I'm also happy with how the three tasks connect: the transfer history
+feeds directly into the velocity calculation, which feeds into the reorder
+recommendations, which surface on the dashboard. It feels like a real
+system rather than three disconnected features."
+
+KNOWN LIMITATIONS:
+
+"The main limitation is that the single-file atomicity trick only protects
+within one request. Two simultaneous transfers can still race each other —
+there's no file-level locking across requests. That's the core reason
+I'd reach for PostgreSQL at scale.
+
+The velocity calculation uses a 30-day window and treats all transfers
+equally. A smarter version would weight recent transfers more heavily
+and distinguish inbound from outbound movements.
+
+Lead time is configurable per session but not persisted — refreshing
+the page resets it to 7 days. In production this would be a per-product
+or per-supplier setting stored in the database."
+
+WHAT I'D IMPROVE WITH MORE TIME:
+
+"I'd add optimistic locking on the stock writes — a version field that
+gets checked before committing, so concurrent requests fail fast rather
+than silently overwriting. I'd also add unit tests for the reorder
+formula and the transfer validation, and TypeScript across the board
+for type safety on the JSON shapes."

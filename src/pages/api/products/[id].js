@@ -18,15 +18,18 @@ export default function handler(req, res) {
   } else if (req.method === 'PUT') {
     const index = products.findIndex((p) => p.id === parseInt(id));
     if (index !== -1) {
-      // Sanitize numeric fields for data consistency
-      const numericFields = ['unitCost', 'reorderPoint'];
-      const sanitizedData = { ...req.body };
-      numericFields.forEach(field => {
-        if (sanitizedData[field] !== undefined) {
-          sanitizedData[field] = parseInt(sanitizedData[field]);
-        }
-      });
-      products[index] = { ...products[index], ...sanitizedData, id: parseInt(id) };
+      // BUG FIX: previously used parseInt() for ALL numeric fields, which
+      // truncated unitCost decimals (e.g. 0.85 → 0, 2.50 → 2) on every save.
+      // This caused inventory values on the dashboard to silently drift lower
+      // each time a product was edited. Fix: use parseFloat for unitCost and
+      // parseInt only for reorderPoint, which is always a whole number.
+      products[index] = {
+        ...products[index],
+        ...req.body,
+        id: parseInt(id),
+        unitCost: parseFloat(req.body.unitCost),
+        reorderPoint: parseInt(req.body.reorderPoint),
+      };
       fs.writeFileSync(filePath, JSON.stringify(products, null, 2));
       res.status(200).json(products[index]);
     } else {
